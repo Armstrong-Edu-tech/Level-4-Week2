@@ -1,0 +1,27 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Profiles Viewer</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <h1>User Profiles</h1>
+    
+    <p v-if="loading">Loading user profiles...</p>
+
+    <div v-for="user in users" :key="user.id" class="user-card">
+      <h2>{{ user.name }}</h2>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Username:</strong> {{ user.username }}</p>
+      <p><strong>City:</strong> {{ user.address.city }}</p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fetch Example</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+
+  <div id="app">
+    <div v-if="product.title">
+      <h2>{{ product.title }}</h2>
+      <p>${{ product.price }}</p>
+      <p>{{ product.description }}</p>
+    </div>
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          product: {}
+        };
+      },
+      mounted() {
+        fetch('https://fakestoreapi.com/products/2')
+          .then(response => {
+            if (!response.ok) throw new Error('Failed to fetch data');
+            return response.json(); // parses JSON
+          })
+          .then(data => {
+            console.log("Fetched Product Data:", data); // Debug: log the parsed object
+            this.product = data; // Set the product to update the UI
+          })
+          .catch(err => {
+            console.error('Error fetching product:', err);
+          });
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>
+
