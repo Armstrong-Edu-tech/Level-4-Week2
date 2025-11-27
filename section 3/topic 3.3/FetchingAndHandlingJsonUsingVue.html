@@ -1,45 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Fetch Example</title>
-  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <meta charset="UTF-8">
+    <title>Fetch Example with Vue</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
-
-  <div id="app">
-    <div v-if="product.title">
-      <h2>{{ product.title }}</h2>
-      <p>${{ product.price }}</p>
-      <p>{{ product.description }}</p>
+    <div id="app">
+        <div v-if="product.title">
+            <h2>{{ product.title }}</h2>
+            <p>${{ product.price }}</p>
+            <p>{{ product.description }}</p>
+        </div>
     </div>
-  </div>
-
-  <script>
-    const { createApp } = Vue;
-
-    createApp({
-      data() {
-        return {
-          product: {}
-        };
-      },
-      mounted() {
-        fetch('https://fakestoreapi.com/products/2')
-          .then(response => {
-            if (!response.ok) throw new Error('Failed to fetch data');
-            return response.json(); // parses JSON
-          })
-          .then(data => {
-            console.log("Fetched Product Data:", data); // Debug: log the parsed object
-            this.product = data; // Set the product to update the UI
-          })
-          .catch(err => {
-            console.error('Error fetching product:', err);
-          });
-      }
-    }).mount('#app');
-  </script>
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                return {
+                    product: {}
+                };
+            },
+            mounted() {
+                fetch('https://fakestoreapi.com/products/2')
+                    .then(response => {
+                        if (!response.ok) console.log('Failed to fetch data');
+                        return response.text(); // Get raw JSON string
+                    })
+                    .then(data => {
+                        // Convert JSON string to JavaScript object
+                        const productObj = JSON.parse(data);
+                        console.log("JavaScript Object:", productObj);
+                        // Update Vue data to render UI
+                        this.product = productObj;
+                        // Convert object back to JSON string for debugging or storing
+                        const jsonStringified = JSON.stringify(productObj);
+                        console.log("JSON String:", jsonStringified);
+                    })
+                    .catch(err => console.error('Error fetching product:', err));
+            }
+        }).mount('#app');
+    </script>
 </body>
 </html>
-
